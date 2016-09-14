@@ -5,7 +5,6 @@ Created on 2016年6月15日
 @author: hustcc
 '''
 import sys
-from app.utils import StringUtil
 from app import SQLAlchemyDB as db
 
 

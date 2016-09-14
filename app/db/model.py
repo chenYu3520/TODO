@@ -7,7 +7,7 @@ Created on 2016年6月15日
 from sqlalchemy import Column, DateTime, Integer, String
 
 from app import SQLAlchemyDB as db
-from app.utils import StringUtil, DateUtil, ModuleUtil
+from app.utils import DateUtil
 from sqlalchemy import func
 
 
