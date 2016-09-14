@@ -11,7 +11,7 @@ We use it [here](http://to) to record our TODO.
  - ![MultiUser](http://shields.hust.cc/TODO-MultiUser-green.svg) So many TODO application is for single user, and Save data at local, when changed to another computer, all data reset.
 
 
-## Start
+## Quick Start
 
 ```sh
 # 1. clone the project code
@@ -29,7 +29,7 @@ python run_todo.py
 ```
 
 
-## Deploy
+## Deploy Nginx
 
 If you want to higher performance, you can deploy it with `Nginx` + `Gunicorn`. Briefly below:
 
