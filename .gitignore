@@ -3,3 +3,4 @@
 .pydevproject
 *.py[cod]
 nohup.out
+todo.db
