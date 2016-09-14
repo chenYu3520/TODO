@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" data-framework="javascript" />
+	<head>
+		<meta charset="utf-8" />
+		<title>{{user_id}}'s TODO - a Simple TODO Applacation based on Github.</title>
+		<link rel="stylesheet" href="static/todomvc-common/base.css" />
+		<link rel="stylesheet" href="static/todomvc-app-css/index.css" />
+		<link rel="shortcut icon" href="static/img/todo.jpg" />
+		<link rel="bookmark" href="static/img/todo.jpg" />
+	</head>
+	<body>
+		<section class="todoapp">
+			<header class="header">
+				<h1>TODO</h1>
+				<input class="new-todo" placeholder="What needs to be done?" autofocus>
+			</header>
+			<section class="main">
+				<input class="toggle-all" type="checkbox">
+				<label for="toggle-all">Mark all as complete</label>
+				<ul class="todo-list"></ul>
+			</section>
+			<footer class="footer">
+				<span class="todo-count"></span>
+				<ul class="filters">
+					<li>
+						<a href="#/" class="selected">All</a>
+					</li>
+					<li>
+						<a href="#/active">Active</a>
+					</li>
+					<li>
+						<a href="#/completed">Completed</a>
+					</li>
+				</ul>
+				<button class="clear-completed">Clear completed</button>
+			</footer>
+		</section>
+		<footer class="info">
+			<p>Current login USER: <a href="https://github.com/{{user_id}}">{{user_id}}</a>.</p>
+			<p>Created by <a rel="nofollow" href="http://twitter.com/oscargodson">Godson</a>, Refactored by <a rel="nofollow" href="https://github.com/cburgmer">CBurgmer</a></p>
+			<p>Update by <a href="https://github.com/hustcc">Hustcc</a>. Part of <a rel="nofollow" href="http://todomvc.com">TodoMVC</a></p>
+		</footer>
+		<script src="static/js/xhr.min.js"></script>
+		<script src="static/todomvc-common/base.js"></script>
+		<script src="static/js/helpers.js"></script>
+		<script src="static/js/store.js"></script>
+		<script src="static/js/model.js"></script>
+		<script src="static/js/template.js"></script>
+		<script src="static/js/view.js"></script>
+		<script src="static/js/controller.js"></script>
+		<script src="static/js/app.js"></script>
+	</body>
+</html>
