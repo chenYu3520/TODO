@@ -1,0 +1,3 @@
+Flask
+Flask-SQLAlchemy==1.0.15
+rauth==0.7.2
