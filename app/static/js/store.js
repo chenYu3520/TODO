@@ -14,16 +14,21 @@
 		callback = callback || function () {};
 
 		this._dbName = name;
-
-		if (!localStorage[name]) {
-			var data = {
-				todos: []
-			};
-
-			localStorage[name] = JSON.stringify(data);
-		}
-
-		callback.call(this, JSON.parse(localStorage[name]));
+		this.xhr = new XHR(false); // for ajax request.
+		// init
+		var self = this;
+		this.xhr.get('/api/findAll', {user_id: TODO_USER}, function(r) {
+			r = r.json();
+			if (r.success === 1) {
+				// save to local
+				var todos = {todos: r.data}
+				localStorage[name] = JSON.stringify(todos);
+				callback.call(self, r.data);
+			}
+			else {
+				alert(r.data);
+			}
+		});
 	}
 
 	/**
@@ -75,32 +80,43 @@
 	 * @param {number} id An optional param to enter an ID of an item to update
 	 */
 	Store.prototype.save = function (updateData, callback, id) {
-		var data = JSON.parse(localStorage[this._dbName]);
-		var todos = data.todos;
+		var self = this;
+		if (id) updateData['id'] = id;
+		this.xhr.post('/api/save', updateData, function(r) {
+			r = r.json();
+			if (r.success === 1) {
+				// database update, then update local
+				var data = JSON.parse(localStorage[self._dbName]);
+				var todos = data.todos;
 
-		callback = callback || function () {};
+				callback = callback || function () {};
 
-		// If an ID was actually given, find the item and update each property
-		if (id) {
-			for (var i = 0; i < todos.length; i++) {
-				if (todos[i].id === id) {
-					for (var key in updateData) {
-						todos[i][key] = updateData[key];
+				// If an ID was actually given, find the item and update each property
+				if (id) {
+					for (var i = 0; i < todos.length; i++) {
+						if (todos[i].id === id) {
+							for (var key in updateData) {
+								todos[i][key] = updateData[key];
+							}
+							break;
+						}
 					}
-					break;
+
+					localStorage[self._dbName] = JSON.stringify(data);
+					callback.call(self, todos);
+				} else {
+					// Generate an ID
+					updateData.id = r.data.id
+
+					todos.push(updateData);
+					localStorage[self._dbName] = JSON.stringify(data);
+					callback.call(self, [updateData]);
 				}
 			}
-
-			localStorage[this._dbName] = JSON.stringify(data);
-			callback.call(this, todos);
-		} else {
-			// Generate an ID
-			updateData.id = new Date().getTime();
-
-			todos.push(updateData);
-			localStorage[this._dbName] = JSON.stringify(data);
-			callback.call(this, [updateData]);
-		}
+			else {
+				alert(r.data);
+			}
+		});
 	};
 
 	/**
@@ -110,18 +126,27 @@
 	 * @param {function} callback The callback to fire after saving
 	 */
 	Store.prototype.remove = function (id, callback) {
-		var data = JSON.parse(localStorage[this._dbName]);
-		var todos = data.todos;
+		var self = this;
+		this.xhr.post('/api/remove', {id: id}, function(r) {
+			r = r.json();
+			if (r.success === 1) {
+				var data = JSON.parse(localStorage[self._dbName]);
+				var todos = data.todos;
 
-		for (var i = 0; i < todos.length; i++) {
-			if (todos[i].id == id) {
-				todos.splice(i, 1);
-				break;
+				for (var i = 0; i < todos.length; i++) {
+					if (todos[i].id == id) {
+						todos.splice(i, 1);
+						break;
+					}
+				}
+
+				localStorage[self._dbName] = JSON.stringify(data);
+				callback.call(self, todos);
 			}
-		}
-
-		localStorage[this._dbName] = JSON.stringify(data);
-		callback.call(this, todos);
+			else {
+				alert(r.data);
+			}
+		});
 	};
 
 	/**
@@ -130,9 +155,17 @@
 	 * @param {function} callback The callback to fire after dropping the data
 	 */
 	Store.prototype.drop = function (callback) {
-		var data = {todos: []};
-		localStorage[this._dbName] = JSON.stringify(data);
-		callback.call(this, data.todos);
+		var self = this;
+		this.xhr.post('/api/drop', {}, function(r) {
+			r = r.json();
+			if (r.success === 1) {
+				localStorage[self._dbName] = JSON.stringify({todos: []});
+				callback.call(self, []);
+			}
+			else {
+				alert(r.data);
+			}
+		});
 	};
 
 	// Export to window

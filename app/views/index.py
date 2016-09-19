@@ -5,12 +5,11 @@ Created on 2016年9月14日
 @author: hustcc
 '''
 
-from app import app
+from app import app, github
 from app.wraps import login_wrap 
 from app.utils import RequestUtil, DateUtil
 from werkzeug.utils import redirect
 
-from rauth.service import OAuth2Service
 from flask.helpers import flash, url_for
 from flask.globals import session, request
 import flask
@@ -18,21 +17,11 @@ import flask
 from app.db import User, Todo
 
 
-github = OAuth2Service(
-    name='github',
-    base_url='https://api.github.com/',
-    access_token_url='https://github.com/login/oauth/access_token',
-    authorize_url='https://github.com/login/oauth/authorize',
-    client_id = '9bcf268e49ef12984560',
-    client_secret = '2e76b638daa4ab0430539da84cbe46444414ba78',
-)
-
-
 @app.route('/', methods=['GET'])
 @login_wrap.login_required()
 def index():
     user_id = RequestUtil.get_login_user(session)
-    user = User.query.get(user_id)
+    user = User.query.filter_by(id=user_id).first()
     if user:
         return flask.render_template('index.html', user_id=user_id)
     return redirect(url_for('login'))
@@ -76,10 +65,10 @@ def authorized():
     RequestUtil.login(session, user_id)
     
     # add in to db
-    user = User.query.get(user_id)
+    user = User.query.filter_by(id=user_id).first()
     if not user:
         # not exist, insert
-        user = User(id=user_id, name=me['name'])
+        user = User(id=user_id, uid=user_id, name=me['name'], source='github')
     user.last_login=DateUtil.now_datetime()
     # save to db
     user.save()

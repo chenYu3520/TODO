@@ -14,8 +14,6 @@
 		self.view = view;
 
 		self.view.bind('newTodo', function (title) {
-			console.log('newTodo', title);
-			// todo api
 			self.addItem(title);
 		});
 
@@ -24,8 +22,6 @@
 		});
 
 		self.view.bind('itemEditDone', function (item) {
-			console.log('itemEditDone', item);
-			// todo api
 			self.editItemSave(item.id, item.title);
 		});
 
@@ -34,25 +30,18 @@
 		});
 
 		self.view.bind('itemRemove', function (item) {
-			console.log('itemRemove', item);
-			// todo api
 			self.removeItem(item.id);
 		});
 
 		self.view.bind('itemToggle', function (item) {
-			console.log('itemToggle', item);
-			// todo api
 			self.toggleComplete(item.id, item.completed);
 		});
 
 		self.view.bind('removeCompleted', function () {
-			console.log('removeCompleted');
-			// todo api
 			self.removeCompletedItems();
 		});
 
 		self.view.bind('toggleAll', function (status) {
-			console.log('toggleAll', status);
 			self.toggleAll(status.completed);
 		});
 	}

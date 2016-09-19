@@ -11,7 +11,7 @@
 	<body>
 		<section class="todoapp">
 			<header class="header">
-				<h1>TODO</h1>
+				<h1>MY TODO</h1>
 				<input class="new-todo" placeholder="What needs to be done?" autofocus>
 			</header>
 			<section class="main">
@@ -36,10 +36,13 @@
 			</footer>
 		</section>
 		<footer class="info">
-			<p>Current login USER: <a href="https://github.com/{{user_id}}">{{user_id}}</a>.</p>
+			<p>Current login USER: <a href="https://github.com/{{user_id}}">{{user_id}}</a> / <a href="/logout">logout</a>.</p>
 			<p>Created by <a rel="nofollow" href="http://twitter.com/oscargodson">Godson</a>, Refactored by <a rel="nofollow" href="https://github.com/cburgmer">CBurgmer</a></p>
 			<p>Update by <a href="https://github.com/hustcc">Hustcc</a>. Part of <a rel="nofollow" href="http://todomvc.com">TodoMVC</a></p>
 		</footer>
+		<script type="text/javascript">
+			var TODO_USER = '{{user_id}}';
+		</script>
 		<script src="static/js/xhr.min.js"></script>
 		<script src="static/todomvc-common/base.js"></script>
 		<script src="static/js/helpers.js"></script>
