@@ -40,7 +40,9 @@ def login():
 @app.route('/logout.html', methods=['GET'])
 def logout():
     RequestUtil.logout(session)
-    return redirect(url_for('login'))
+    resp = redirect(url_for('login'))
+    resp.set_cookie('sessionID', '', expires=0)
+    return resp
 
 @app.route('/github/callback')
 def authorized():
