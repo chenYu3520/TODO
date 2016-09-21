@@ -18,7 +18,6 @@ from app.db import User, Todo
 
 
 @app.route('/', methods=['GET'])
-@login_wrap.login_required()
 def index():
     user_id = RequestUtil.get_login_user(session)
     user = User.query.filter_by(id=user_id).first()
