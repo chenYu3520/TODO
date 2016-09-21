@@ -24,7 +24,8 @@ def index():
     user = User.query.filter_by(id=user_id).first()
     if user:
         return flask.render_template('index.html', user_id=user_id)
-    return redirect(url_for('login'))
+    else:
+        return flask.render_template('login.html', user_id=user_id)
 
 
 @app.route('/login', methods=['GET'])

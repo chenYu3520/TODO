@@ -4,3 +4,4 @@
 *.py[cod]
 nohup.out
 todo.db
+node_modules/*
