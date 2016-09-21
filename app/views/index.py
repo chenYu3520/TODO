@@ -29,51 +29,41 @@ def index():
 
 @app.route('/login', methods=['GET'])
 def login():
-    redirect_uri = url_for('authorized',  _external=True)
-    # More scopes http://developer.github.com/v3/oauth/#scopes
-    params = {'redirect_uri': redirect_uri, 'scope': 'user:email'}
-    
-    return redirect(github.get_authorize_url(**params))
+    return github.authorize()
 
 
 @app.route('/logout', methods=['GET'])
 @app.route('/logout.html', methods=['GET'])
 def logout():
     RequestUtil.logout(session)
-    resp = redirect(url_for('login'))
-    resp.set_cookie('sessionID', '', expires=0)
-    return resp
+    return redirect(url_for('login'))
+
+
+@github.access_token_getter
+def token_getter():
+    return session.get('oauth_token', None)
+
 
 @app.route('/github/callback')
-def authorized():
-    # check to make sure the user authorized the request
-    code = RequestUtil.get_parameter(request, 'code', None)
-    if not code:
-        flash('You did not authorize the request')
-        return redirect(url_for('index'))
-
-    # make a request for the access token credentials using code
-    redirect_uri = url_for('authorized', _external=True)
-
-    data = dict(code=code,
-        redirect_uri=redirect_uri,
-        scope='user:email')
-
-    auth = github.get_auth_session(data=data)
-
-    # the "me" response
-    me = auth.get('user').json()
+@github.authorized_handler
+def authorized(oauth_token):
+    next_url = request.args.get('next') or url_for('index')
+    if oauth_token is None:
+        flash("Authorization failed.")
+        return redirect(next_url)
+    
+    session['oauth_token'] = oauth_token
+    
+    me = github.get('user')
     user_id = me['login']
+    
+    user = User.query.filter_by(id=user_id).first()
+    if user is None:
+        user = User(id=user_id, uid=user_id, name=me['name'], source='github')
+        
+    user.last_login=DateUtil.now_datetime()
+    user.save()
+    
     RequestUtil.login(session, user_id)
     
-    # add in to db
-    user = User.query.filter_by(id=user_id).first()
-    if not user:
-        # not exist, insert
-        user = User(id=user_id, uid=user_id, name=me['name'], source='github')
-    user.last_login=DateUtil.now_datetime()
-    # save to db
-    user.save()
-
-    flash('Logged in as ' + me['name'])
-    return redirect(url_for('index'))
+    return redirect(next_url)
