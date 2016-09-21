@@ -25,7 +25,7 @@ def index():
     if user:
         return flask.render_template('index.html', user_id=user_id)
     else:
-        return flask.render_template('login.html', user_id=user_id)
+        return flask.render_template('login.html')
 
 
 @app.route('/login', methods=['GET'])
