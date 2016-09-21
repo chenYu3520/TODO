@@ -17,9 +17,10 @@ app.secret_key = 'your_session_key_todo'
 
 app.config['u_id'] = 'uid' # login user's session key
 
-DB_FILE_PATH = 'todo.db' # use sqlite
+# DB_FILE_PATH = 'todo.db' # use sqlite
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///%s' % DB_FILE_PATH
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///%s' % DB_FILE_PATH
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://omtqoikdraegrf:pHxk7z06MOIbd10EDpoHWsX2qX@ec2-54-235-108-156.compute-1.amazonaws.com:5432/d5gvcab8joo79k'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 SQLAlchemyDB = SQLAlchemy(app)
 
