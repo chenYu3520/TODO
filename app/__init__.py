@@ -8,7 +8,6 @@ Created on 2016年9月14日
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from rauth.service import OAuth2Service
 
 
 VERSION = '1.0.0'
