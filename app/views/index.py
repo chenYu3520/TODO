@@ -37,7 +37,7 @@ def login():
 @app.route('/logout.html', methods=['GET'])
 def logout():
     RequestUtil.logout(session)
-    return redirect(url_for('login'))
+    return redirect(url_for('index'))
 
 
 @github.access_token_getter
