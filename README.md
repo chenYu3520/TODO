@@ -4,6 +4,8 @@
 
 We use it [here](http://mytodo.cc) to record our TODO.
 
+![screenshot.png](app/static/img/screenshot.png)
+
 ## Features
 
  - ![Simple](http://shields.hust.cc/TODO-Simple-orange.svg) Based on `Flask + SQLite`. Simple environmental requirements.
